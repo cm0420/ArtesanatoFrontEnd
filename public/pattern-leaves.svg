@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260">
+  <defs>
+    <g id="leaf">
+      <path
+        d="M50,6 C78,22 82,64 50,96 C18,64 22,22 50,6 Z"
+        fill="#C99A3D"
+        fill-opacity="0.12"
+      />
+      <path d="M50,12 L50,90" stroke="#C99A3D" stroke-opacity="0.16" stroke-width="1.5" fill="none" />
+    </g>
+  </defs>
+
+  <use href="#leaf" transform="translate(10,10) rotate(-18 50 50) scale(0.7)" />
+  <use href="#leaf" transform="translate(150,30) rotate(35 50 50) scale(0.55)" />
+  <use href="#leaf" transform="translate(70,140) rotate(-40 50 50) scale(0.8)" />
+  <use href="#leaf" transform="translate(190,150) rotate(15 50 50) scale(0.6)" />
+  <use href="#leaf" transform="translate(-10,190) rotate(60 50 50) scale(0.5)" />
+</svg>

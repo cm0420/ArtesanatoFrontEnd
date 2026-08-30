@@ -1,0 +1,143 @@
+<div class="min-h-screen bg-osso bg-leaves">
+  <app-site-header />
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    @if (loading()) {
+      <p class="font-mono text-sm text-grafite/60">Carregando…</p>
+    } @else if (customer()) {
+      @let c = customer()!;
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <p class="font-mono text-xs tracking-[2px] uppercase text-vinho mb-1">Minha conta</p>
+          <h1 class="font-display uppercase tracking-wide text-4xl text-grafite">Olá, {{ c.firstName }}</h1>
+        </div>
+        <button
+          type="button"
+          (click)="logout()"
+          class="font-mono text-xs uppercase tracking-wide text-grafite/60 border border-areia rounded-lg px-4 py-2 hover:border-vinho hover:text-vinho transition-colors"
+        >
+          Sair
+        </button>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="font-mono text-xs text-vinho border border-vinho/30 bg-vinho/5 rounded-lg px-3 py-2 mb-6">
+          {{ errorMessage() }}
+        </p>
+      }
+
+      @if (!editing()) {
+        <div class="bg-white border border-areia rounded-2xl p-5 sm:p-6 flex flex-col gap-4 mb-6">
+          <div class="flex items-center justify-between">
+            <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50">Dados pessoais</h2>
+            <button
+              type="button"
+              (click)="startEditing()"
+              class="font-mono text-[11px] uppercase tracking-wide text-terracota hover:underline"
+            >
+              Editar
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-wide text-grafite/40">Nome</p>
+              <p class="font-body text-lg text-grafite">{{ c.firstName }} {{ c.lastName }}</p>
+            </div>
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-wide text-grafite/40">E-mail</p>
+              <p class="font-body text-lg text-grafite">{{ c.email }}</p>
+            </div>
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-wide text-grafite/40">Telefone</p>
+              <p class="font-body text-lg text-grafite">{{ c.phone }}</p>
+            </div>
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-wide text-grafite/40">CPF</p>
+              <p class="font-body text-lg text-grafite">{{ c.cpf }}</p>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <form [formGroup]="editForm" (ngSubmit)="saveProfile()" class="bg-white border border-areia rounded-2xl p-5 sm:p-6 flex flex-col gap-4 mb-6">
+          <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50">Editar dados pessoais</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Nome</label>
+              <input
+                type="text"
+                formControlName="firstName"
+                class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Sobrenome</label>
+              <input
+                type="text"
+                formControlName="lastName"
+                class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">E-mail</label>
+              <input
+                type="email"
+                formControlName="email"
+                class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+              />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Telefone</label>
+              <input
+                type="tel"
+                formControlName="phone"
+                class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+              />
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button
+              type="button"
+              (click)="cancelEditing()"
+              class="font-mono text-xs uppercase tracking-wide text-grafite/60 border border-areia rounded-lg px-5 py-3"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              [disabled]="submitting()"
+              class="flex-1 font-display uppercase tracking-wide text-base px-7 py-3 rounded-lg border-2 border-grafite bg-terracota text-osso font-semibold disabled:opacity-60"
+            >
+              {{ submitting() ? 'Salvando…' : 'Salvar alterações' }}
+            </button>
+          </div>
+        </form>
+      }
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a
+          routerLink="/carrinho"
+          class="block bg-white border border-areia rounded-2xl p-5 sm:p-6 hover:border-terracota transition-colors"
+        >
+          <h2 class="font-display uppercase tracking-wide text-xl text-grafite">Meu carrinho</h2>
+          <p class="font-body text-base text-grafite/60 mt-1">Ver itens adicionados e finalizar compra.</p>
+        </a>
+
+        <a
+          routerLink="/pedidos"
+          class="block bg-white border border-areia rounded-2xl p-5 sm:p-6 hover:border-terracota transition-colors"
+        >
+          <h2 class="font-display uppercase tracking-wide text-xl text-grafite">Meus pedidos</h2>
+          <p class="font-body text-base text-grafite/60 mt-1">Acompanhar status e histórico de compras.</p>
+        </a>
+
+        <a
+          routerLink="/cliente/enderecos"
+          class="block bg-white border border-areia rounded-2xl p-5 sm:p-6 hover:border-terracota transition-colors"
+        >
+          <h2 class="font-display uppercase tracking-wide text-xl text-grafite">Meus endereços</h2>
+          <p class="font-body text-base text-grafite/60 mt-1">Gerenciar endereços de entrega.</p>
+        </a>
+      </div>
+    }
+  </main>
+</div>

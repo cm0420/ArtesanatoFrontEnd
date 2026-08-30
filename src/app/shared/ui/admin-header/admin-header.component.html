@@ -1,0 +1,22 @@
+<header class="bg-grafite border-b-[6px] border-dourado px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between">
+  <a routerLink="/admin" class="flex items-baseline gap-2">
+    <span class="font-display uppercase tracking-wide text-osso text-xl sm:text-2xl">Barro &amp; Vinil</span>
+    <span class="font-mono text-xs uppercase tracking-wide text-dourado">Admin</span>
+  </a>
+
+  <div class="flex items-center gap-2 sm:gap-4">
+    <a
+      routerLink="/admin/pedidos"
+      class="flex items-center h-11 font-mono text-xs uppercase tracking-wide text-dourado border border-dourado rounded-lg px-4 hover:bg-dourado hover:text-grafite transition-colors"
+    >
+      Pedidos
+    </a>
+    <button
+      type="button"
+      (click)="logout()"
+      class="flex items-center h-11 font-mono text-xs uppercase tracking-wide text-dourado border border-dourado rounded-lg px-4 hover:bg-dourado hover:text-grafite transition-colors"
+    >
+      Sair
+    </button>
+  </div>
+</header>

@@ -1,0 +1,102 @@
+<div class="min-h-screen bg-osso bg-leaves">
+  <app-site-header />
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <app-back-link to="/" label="Voltar ao catálogo" />
+
+    @if (loading()) {
+      <p class="font-mono text-sm text-grafite/60">Carregando…</p>
+    } @else if (notFound() || !set()) {
+      <p class="font-mono text-sm text-vinho">Conjunto não encontrado.</p>
+    } @else {
+      @let s = set()!;
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="relative rounded-2xl overflow-hidden border border-areia h-80 md:h-[28rem]">
+          <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #C99A3D, #6E2A2A)">
+            <span class="font-mono text-xs text-white/70">conjunto · {{ s.pieces.length }} peças</span>
+          </div>
+          @if (s.availableStock === 0) {
+            <span
+              class="absolute top-4 right-4 font-mono text-sm font-semibold uppercase tracking-wide bg-grafite/90 text-osso px-3.5 py-2 rounded-lg"
+            >
+              Esgotado
+            </span>
+          }
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <span class="font-mono text-sm font-semibold uppercase tracking-wide bg-dourado text-grafite px-3 py-1.5 rounded-lg w-fit">
+            Conjunto
+          </span>
+
+          <h1 class="font-display uppercase tracking-wide text-5xl text-grafite">{{ s.name }}</h1>
+
+          <p class="font-mono font-semibold text-2xl text-grafite">{{ s.price | currency: 'BRL' }}</p>
+
+          @if (s.description) {
+            <p class="font-body text-lg text-grafite/80 leading-relaxed max-w-md">{{ s.description }}</p>
+          }
+
+          <div class="flex flex-col gap-1.5 mt-1">
+            <p class="font-mono text-sm uppercase tracking-wide text-grafite/50">Inclui</p>
+            @for (piece of s.pieces; track piece.id) {
+              <p class="font-body text-base text-grafite/70">— {{ piece.name }}</p>
+            }
+          </div>
+
+          <p [class]="'font-mono text-sm font-semibold uppercase tracking-wide ' + (s.availableStock > 0 ? 'text-grafite/60' : 'text-vinho')">
+            {{ s.availableStock > 0 ? s.availableStock + ' em estoque' : 'Sem estoque no momento' }}
+          </p>
+
+          @if (addToCartError()) {
+            <p class="font-mono text-xs text-vinho border border-vinho/30 bg-vinho/5 rounded-lg px-3 py-2">
+              {{ addToCartError() }}
+            </p>
+          }
+
+          @if (s.availableStock > 0) {
+            @if (isAuthenticated()) {
+              <div class="flex flex-col sm:flex-row sm:items-center gap-4 mt-2">
+                <div class="flex items-center border border-areia rounded-lg overflow-hidden w-fit">
+                  <button
+                    type="button"
+                    (click)="decrementQuantity()"
+                    [disabled]="quantity() <= 1"
+                    class="w-11 h-11 flex items-center justify-center font-mono text-grafite hover:bg-osso transition-colors disabled:opacity-30"
+                  >
+                    −
+                  </button>
+                  <span class="w-10 text-center font-mono text-base text-grafite">{{ quantity() }}</span>
+                  <button
+                    type="button"
+                    (click)="incrementQuantity()"
+                    [disabled]="quantity() >= s.availableStock"
+                    class="w-11 h-11 flex items-center justify-center font-mono text-grafite hover:bg-osso transition-colors disabled:opacity-30"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  (click)="addToCart(s.id)"
+                  [disabled]="addingToCart()"
+                  class="btn font-display uppercase tracking-wide text-base px-7 py-3.5 rounded-lg border-2 border-grafite bg-terracota text-osso font-semibold transition-all duration-300 hover:shadow-lg active:scale-[0.97] active:duration-75 disabled:opacity-60"
+                >
+                  {{ justAdded() ? 'Adicionado ✓' : addingToCart() ? 'Adicionando…' : 'Adicionar ao carrinho' }}
+                </button>
+              </div>
+            } @else {
+              <a
+                routerLink="/login"
+                class="inline-block w-fit font-mono text-xs uppercase tracking-wide text-vinho border border-vinho rounded-lg px-4 py-2.5 hover:bg-vinho hover:text-osso transition-colors mt-2"
+              >
+                Entrar para comprar
+              </a>
+            }
+          }
+        </div>
+      </div>
+    }
+  </main>
+</div>

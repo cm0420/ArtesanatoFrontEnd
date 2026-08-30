@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-osso bg-leaves">
+  <app-admin-header />
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <app-back-link to="/admin" label="Painel" />
+
+    <h1 class="font-display uppercase tracking-wide text-4xl text-grafite mb-8">Relatórios</h1>
+
+    <section class="bg-white border border-areia rounded-2xl p-5 sm:p-6 mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
+        <div class="flex flex-col gap-1.5">
+          <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">De</label>
+          <input
+            type="date"
+            [value]="startDate()"
+            (change)="startDate.set($any($event.target).value)"
+            class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+          />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Até</label>
+          <input
+            type="date"
+            [value]="endDate()"
+            (change)="endDate.set($any($event.target).value)"
+            class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+          />
+        </div>
+        <button
+          type="button"
+          (click)="loadSalesReport()"
+          class="font-mono font-semibold text-sm uppercase tracking-wide text-osso bg-terracota border-2 border-grafite rounded-lg px-6 py-3 hover:shadow-lg transition-shadow"
+        >
+          Atualizar
+        </button>
+      </div>
+
+      @if (salesLoading()) {
+        <p class="font-mono text-base text-grafite/60">Carregando…</p>
+      } @else if (salesReport()) {
+        @let report = salesReport()!;
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-osso rounded-lg p-5">
+            <p class="font-mono text-xs uppercase tracking-wide text-grafite/50 mb-1">Pedidos no período</p>
+            <p class="font-mono font-bold text-3xl text-grafite">{{ report.totalOrders }}</p>
+          </div>
+          <div class="bg-osso rounded-lg p-5">
+            <p class="font-mono text-xs uppercase tracking-wide text-grafite/50 mb-1">Receita no período</p>
+            <p class="font-mono font-bold text-3xl text-terracota">{{ report.totalRevenue | currency: 'BRL' }}</p>
+          </div>
+        </div>
+      }
+    </section>
+
+    <section class="bg-white border border-areia rounded-2xl p-5 sm:p-6 mb-8">
+      <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50 mb-4">Mais vendidos</h2>
+      @if (bestSellingLoading()) {
+        <p class="font-mono text-base text-grafite/60">Carregando…</p>
+      } @else if (bestSelling().length === 0) {
+        <p class="font-mono text-base text-grafite/60">Sem vendas registradas ainda.</p>
+      } @else {
+        <div class="flex flex-col gap-3">
+          @for (piece of bestSelling(); track piece.pieceId; let i = $index) {
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-sm text-grafite/40 w-5">{{ i + 1 }}</span>
+                <span class="font-body text-grafite">{{ piece.pieceName }}</span>
+              </div>
+              <span class="font-mono font-semibold text-grafite">{{ piece.totalQuantitySold }} un.</span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="bg-white border border-areia rounded-2xl p-5 sm:p-6">
+      <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50 mb-4">Aguardando envio</h2>
+      @if (pendingLoading()) {
+        <p class="font-mono text-base text-grafite/60">Carregando…</p>
+      } @else if (pendingOrders().length === 0) {
+        <p class="font-mono text-base text-grafite/60">Nenhum pedido aguardando envio.</p>
+      } @else {
+        <div class="flex flex-col gap-3">
+          @for (order of pendingOrders(); track order.id) {
+            <a
+              [routerLink]="['/admin/pedidos', order.id]"
+              class="flex items-center justify-between border-b border-areia pb-3 last:border-0 last:pb-0 hover:text-terracota transition-colors"
+            >
+              <div>
+                <p class="font-body text-grafite">{{ order.recipientName }}</p>
+                <p class="font-mono text-xs text-grafite/50">
+                  {{ order.shippingCity }}/{{ order.shippingState }} · {{ order.createdAt | date: 'dd/MM/yyyy' }}
+                </p>
+              </div>
+              <span class="font-mono font-semibold text-grafite">{{ order.totalAmount | currency: 'BRL' }}</span>
+            </a>
+          }
+        </div>
+
+        @if (pendingTotalPages() > 1) {
+          <div class="flex items-center justify-center gap-4 mt-6">
+            <button
+              type="button"
+              (click)="goToPendingPage(-1)"
+              [disabled]="!pendingHasPrev()"
+              class="font-mono text-sm uppercase tracking-wide px-4 py-2 rounded-lg border border-grafite text-grafite disabled:opacity-30"
+            >
+              Anterior
+            </button>
+            <span class="font-mono text-sm text-grafite/70">Página {{ pendingPage() + 1 }} de {{ pendingTotalPages() }}</span>
+            <button
+              type="button"
+              (click)="goToPendingPage(1)"
+              [disabled]="!pendingHasNext()"
+              class="font-mono text-sm uppercase tracking-wide px-4 py-2 rounded-lg border border-grafite text-grafite disabled:opacity-30"
+            >
+              Próxima
+            </button>
+          </div>
+        }
+      }
+    </section>
+  </main>
+</div>

@@ -1,0 +1,65 @@
+<div class="min-h-screen bg-osso bg-leaves">
+  <app-site-header />
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <app-back-link to="/cliente" label="Minha conta" />
+
+    <h1 class="font-display uppercase tracking-wide text-4xl text-grafite mb-8">Meus pedidos</h1>
+
+    @if (loading()) {
+      <p class="font-mono text-sm text-grafite/60">Carregando…</p>
+    } @else if (placedOrders().length === 0) {
+      <div class="bg-white border border-areia rounded-2xl p-10 text-center flex flex-col items-center gap-4">
+        <p class="font-body text-lg text-grafite/70">Você ainda não fez nenhum pedido.</p>
+        <a
+          routerLink="/"
+          class="font-mono text-sm uppercase tracking-wide text-osso bg-terracota border-2 border-grafite rounded-lg px-6 py-3 hover:shadow-lg transition-shadow"
+        >
+          Ver catálogo
+        </a>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-4">
+        @for (order of placedOrders(); track order.id) {
+          <a
+            [routerLink]="['/pedidos', order.id]"
+            class="block bg-white border border-areia rounded-2xl p-5 hover:border-terracota transition-colors"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-xs uppercase tracking-wide" [class]="statusClass(order.status)">
+                {{ statusLabel[order.status] }}
+              </span>
+              <span class="font-mono text-xs text-grafite/50">{{ order.createdAt | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <p class="font-body text-grafite">
+              {{ order.items.length }} {{ order.items.length === 1 ? 'item' : 'itens' }}
+            </p>
+            <p class="font-mono font-semibold text-grafite mt-1">{{ order.totalAmount | currency: 'BRL' }}</p>
+          </a>
+        }
+      </div>
+
+      @if (totalPages() > 1) {
+        <div class="flex items-center justify-center gap-4 mt-10">
+          <button
+            type="button"
+            (click)="goToPage(-1)"
+            [disabled]="!hasPrev()"
+            class="font-mono text-xs uppercase tracking-wide px-4 py-2 rounded-lg border border-grafite text-grafite disabled:opacity-30"
+          >
+            Anterior
+          </button>
+          <span class="font-mono text-xs text-grafite/70">Página {{ page() + 1 }} de {{ totalPages() }}</span>
+          <button
+            type="button"
+            (click)="goToPage(1)"
+            [disabled]="!hasNext()"
+            class="font-mono text-xs uppercase tracking-wide px-4 py-2 rounded-lg border border-grafite text-grafite disabled:opacity-30"
+          >
+            Próxima
+          </button>
+        </div>
+      }
+    }
+  </main>
+</div>

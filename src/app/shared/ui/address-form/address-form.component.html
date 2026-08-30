@@ -1,0 +1,123 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="bg-white border border-areia rounded-2xl p-5 sm:p-8 flex flex-col gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="flex flex-col gap-1.5">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Apelido</label>
+      <input
+        type="text"
+        formControlName="label"
+        placeholder="Casa, trabalho…"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+    <div class="flex flex-col gap-1.5">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Destinatário</label>
+      <input
+        type="text"
+        formControlName="recipientName"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="flex flex-col gap-1.5">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Telefone</label>
+      <input
+        type="tel"
+        formControlName="recipientPhone"
+        placeholder="(11) 91234-5678"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+    <div class="flex flex-col gap-1.5">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">CEP</label>
+      <input
+        type="text"
+        formControlName="zipCode"
+        placeholder="00000000"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="flex flex-col gap-1.5 col-span-1 sm:col-span-2">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Rua</label>
+      <input
+        type="text"
+        formControlName="street"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+    <div class="flex flex-col gap-1.5">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Número</label>
+      <input
+        type="text"
+        formControlName="number"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Complemento (opcional)</label>
+    <input
+      type="text"
+      formControlName="complement"
+      class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+    />
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="flex flex-col gap-1.5 col-span-1 sm:col-span-2">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Bairro</label>
+      <input
+        type="text"
+        formControlName="neighborhood"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+      />
+    </div>
+    <div class="flex flex-col gap-1.5">
+      <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">UF</label>
+      <input
+        type="text"
+        formControlName="state"
+        maxlength="2"
+        class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota uppercase"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Cidade</label>
+    <input
+      type="text"
+      formControlName="city"
+      class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+    />
+  </div>
+
+  <label class="flex items-center gap-2 font-mono text-[11px] tracking-wide uppercase text-grafite/70">
+    <input type="checkbox" formControlName="isDefault" class="accent-terracota" />
+    Definir como endereço padrão
+  </label>
+
+  <div class="flex gap-3 mt-2">
+    @if (showCancel) {
+      <button
+        type="button"
+        (click)="cancel.emit()"
+        class="font-mono text-xs uppercase tracking-wide text-grafite/60 border border-areia rounded-lg px-5 py-3"
+      >
+        Cancelar
+      </button>
+    }
+    <button
+      type="submit"
+      [disabled]="submitting"
+      class="flex-1 font-display uppercase tracking-wide text-base px-7 py-3 rounded-lg border-2 border-grafite bg-terracota text-osso font-semibold disabled:opacity-60"
+    >
+      {{ submitting ? 'Salvando…' : 'Salvar endereço' }}
+    </button>
+  </div>
+</form>

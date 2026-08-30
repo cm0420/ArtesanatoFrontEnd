@@ -1,0 +1,221 @@
+<div class="min-h-screen bg-osso bg-leaves">
+  <app-site-header />
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <h1 class="font-display uppercase tracking-wide text-4xl text-grafite mb-6">Catálogo</h1>
+
+    <div class="flex gap-6 sm:gap-8 mb-8 border-b-2 border-areia">
+      <button
+        type="button"
+        (click)="switchView('pecas')"
+        [class]="'font-display uppercase tracking-wide text-xl sm:text-2xl px-1 pb-3 border-b-4 transition-colors -mb-0.5 ' + (view() === 'pecas' ? 'border-terracota text-terracota' : 'border-transparent text-grafite/50')"
+      >
+        Peças
+      </button>
+      <button
+        type="button"
+        (click)="switchView('conjuntos')"
+        [class]="'font-display uppercase tracking-wide text-xl sm:text-2xl px-1 pb-3 border-b-4 transition-colors -mb-0.5 ' + (view() === 'conjuntos' ? 'border-terracota text-terracota' : 'border-transparent text-grafite/50')"
+      >
+        Conjuntos
+      </button>
+    </div>
+
+    @if (view() === 'pecas') {
+    <div class="relative max-w-md mb-8 group">
+      <svg
+        class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-grafite/40 transition-colors duration-200 group-focus-within:text-terracota"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="M21,21 L16.65,16.65" />
+      </svg>
+      <input
+        type="text"
+        [value]="searchQuery()"
+        (input)="onSearchInput($any($event.target).value)"
+        placeholder="Buscar peça pelo nome…"
+        class="w-full bg-white font-body text-grafite placeholder:text-grafite/40 border border-areia rounded-lg pl-10 pr-10 py-3 shadow-sm transition-all duration-200 focus:outline-none focus:border-terracota focus:shadow-[0_0_0_3px_rgba(193,89,43,0.12)]"
+      />
+      @if (isSearching()) {
+        <button
+          type="button"
+          (click)="clearSearch()"
+          aria-label="Limpar busca"
+          class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center h-5 w-5 rounded-full text-grafite/40 transition-colors duration-150 hover:text-osso hover:bg-vinho"
+        >
+          <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M5,5 L19,19 M19,5 L5,19" />
+          </svg>
+        </button>
+      }
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-8">
+      <button
+        type="button"
+        (click)="selectCategory(null)"
+        class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 transition-colors"
+        [class.bg-terracota]="selectedCategoryId() === null"
+        [class.text-osso]="selectedCategoryId() === null"
+        [class.border-terracota]="selectedCategoryId() === null"
+        [class.border-areia]="selectedCategoryId() !== null"
+        [class.text-grafite]="selectedCategoryId() !== null"
+      >
+        Todas
+      </button>
+      @for (category of categories(); track category.id) {
+        <button
+          type="button"
+          (click)="selectCategory(category.id)"
+          class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 transition-colors"
+          [class.bg-terracota]="selectedCategoryId() === category.id"
+          [class.text-osso]="selectedCategoryId() === category.id"
+          [class.border-terracota]="selectedCategoryId() === category.id"
+          [class.border-areia]="selectedCategoryId() !== category.id"
+          [class.text-grafite]="selectedCategoryId() !== category.id"
+        >
+          {{ category.name }}
+        </button>
+      }
+    </div>
+
+    @if (loading()) {
+      <p class="font-mono text-base text-grafite/60">Carregando…</p>
+    } @else if (displayedPieces().length === 0) {
+      <p class="font-mono text-base text-grafite/60">
+        {{ isSearching() ? 'Nenhuma peça encontrada pra essa busca.' : 'Nenhuma peça encontrada nessa categoria.' }}
+      </p>
+    } @else {
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        @for (piece of displayedPieces(); track piece.id) {
+          <a
+            [routerLink]="['/pecas', piece.id]"
+            class="group bg-white border border-areia rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ease-out hover:border-terracota hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] active:duration-75"
+          >
+            <div class="h-40 flex items-center justify-center relative overflow-hidden">
+              @if (piece.imageUrls.length > 0) {
+                <img
+                  [src]="piece.imageUrls[0]"
+                  [alt]="piece.name"
+                  class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                />
+              } @else {
+                <div
+                  class="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-110"
+                  style="background: linear-gradient(135deg, #C1592B, #a8461f)"
+                >
+                  <span class="font-mono text-[11px] text-white/60">foto do produto</span>
+                </div>
+              }
+              @if (!piece.inStock) {
+                <span
+                  class="absolute top-2 right-2 font-mono text-xs font-semibold uppercase tracking-wide bg-grafite/90 text-osso px-2.5 py-1.5 rounded-lg"
+                >
+                  Esgotado
+                </span>
+              }
+            </div>
+            <div class="p-4 flex flex-col gap-1">
+              @if (piece.categories.length > 0) {
+                <span class="font-mono text-xs font-semibold uppercase tracking-wide text-vinho">{{ piece.categories[0].name }}</span>
+              }
+              <h3 class="font-display uppercase text-xl text-grafite tracking-wide transition-colors duration-200 group-hover:text-terracota">
+                {{ piece.name }}
+              </h3>
+              <span class="font-mono font-bold text-grafite text-base">{{ piece.price | currency: 'BRL' }}</span>
+            </div>
+          </a>
+        }
+      </div>
+
+      @if (!isSearching()) {
+        <div class="flex items-center justify-center gap-4 mt-10">
+          <button
+            type="button"
+            (click)="goToPage(-1)"
+            [disabled]="!hasPrev()"
+            class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 border-grafite text-grafite disabled:opacity-30"
+          >
+            Anterior
+          </button>
+          <span class="font-mono text-sm text-grafite/70">Página {{ page() + 1 }} de {{ totalPages() }}</span>
+          <button
+            type="button"
+            (click)="goToPage(1)"
+            [disabled]="!hasNext()"
+            class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 border-grafite text-grafite disabled:opacity-30"
+          >
+            Próxima
+          </button>
+        </div>
+      }
+    }
+    }
+
+    @if (view() === 'conjuntos') {
+      @if (setsLoading()) {
+        <p class="font-mono text-base text-grafite/60">Carregando…</p>
+      } @else if (sets().length === 0) {
+        <p class="font-mono text-base text-grafite/60">Nenhum conjunto disponível no momento.</p>
+      } @else {
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          @for (set of sets(); track set.id) {
+            <a
+              [routerLink]="['/conjuntos', set.id]"
+              class="group bg-white border border-areia rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ease-out hover:border-terracota hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] active:duration-75"
+            >
+              <div class="h-40 flex items-center justify-center relative overflow-hidden">
+                <div
+                  class="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-110"
+                  style="background: linear-gradient(135deg, #C99A3D, #6E2A2A)"
+                >
+                  <span class="font-mono text-[11px] text-white/70">{{ set.pieces.length }} peças</span>
+                </div>
+                @if (set.availableStock === 0) {
+                  <span
+                    class="absolute top-2 right-2 font-mono text-xs font-semibold uppercase tracking-wide bg-grafite/90 text-osso px-2.5 py-1.5 rounded-lg"
+                  >
+                    Esgotado
+                  </span>
+                }
+              </div>
+              <div class="p-4 flex flex-col gap-1">
+                <span class="font-mono text-xs font-semibold uppercase tracking-wide text-vinho">Conjunto</span>
+                <h3 class="font-display uppercase text-xl text-grafite tracking-wide transition-colors duration-200 group-hover:text-terracota">
+                  {{ set.name }}
+                </h3>
+                <span class="font-mono font-bold text-grafite text-base">{{ set.price | currency: 'BRL' }}</span>
+              </div>
+            </a>
+          }
+        </div>
+
+        @if (setsTotalPages() > 1) {
+          <div class="flex items-center justify-center gap-4 mt-10">
+            <button
+              type="button"
+              (click)="goToSetsPage(-1)"
+              [disabled]="!setsHasPrev()"
+              class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 border-grafite text-grafite disabled:opacity-30"
+            >
+              Anterior
+            </button>
+            <span class="font-mono text-sm text-grafite/70">Página {{ setsPage() + 1 }} de {{ setsTotalPages() }}</span>
+            <button
+              type="button"
+              (click)="goToSetsPage(1)"
+              [disabled]="!setsHasNext()"
+              class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 border-grafite text-grafite disabled:opacity-30"
+            >
+              Próxima
+            </button>
+          </div>
+        }
+      }
+    }
+  </main>
+</div>

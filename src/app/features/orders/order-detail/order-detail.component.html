@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-osso bg-leaves">
+  <app-site-header />
+
+  <main class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <app-back-link to="/pedidos" label="Meus pedidos" />
+
+    @if (loading()) {
+      <p class="font-mono text-sm text-grafite/60">Carregando…</p>
+    } @else if (notFound() || !order()) {
+      <p class="font-mono text-sm text-vinho">Pedido não encontrado.</p>
+    } @else {
+      @let o = order()!;
+
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="font-display uppercase tracking-wide text-4xl text-grafite">Pedido</h1>
+        <span class="font-mono text-xs uppercase tracking-wide bg-grafite text-osso px-3 py-1.5 rounded-lg">
+          {{ statusLabel[o.status] }}
+        </span>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="font-mono text-xs text-vinho border border-vinho/30 bg-vinho/5 rounded-lg px-3 py-2 mb-6">
+          {{ errorMessage() }}
+        </p>
+      }
+
+      <div class="bg-white border border-areia rounded-2xl p-5 sm:p-6 flex flex-col gap-4 mb-6">
+        <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50">Itens</h2>
+        @for (item of o.items; track item.id) {
+          <div class="flex items-center justify-between font-body">
+            <span class="text-grafite">{{ item.quantity }}x {{ item.itemName }}</span>
+            <span class="text-grafite/70">{{ item.subtotal | currency: 'BRL' }}</span>
+          </div>
+        }
+        @if (o.shippingOptionName) {
+          <div class="flex items-center justify-between font-body pt-2 border-t border-areia">
+            <span class="text-grafite">Frete — {{ o.shippingOptionName }}</span>
+            <span class="text-grafite/70">{{ o.shippingCost | currency: 'BRL' }}</span>
+          </div>
+        }
+        <div class="flex items-center justify-between pt-2 border-t border-areia">
+          <span class="font-mono text-sm uppercase tracking-wide text-grafite/70">Total</span>
+          <span class="font-mono font-semibold text-xl text-grafite">{{ o.totalAmount | currency: 'BRL' }}</span>
+        </div>
+      </div>
+
+      @if (o.recipientName) {
+        <div class="bg-white border border-areia rounded-2xl p-5 sm:p-6 flex flex-col gap-1 mb-6">
+          <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50 mb-2">Entrega</h2>
+          <p class="font-body text-grafite">{{ o.recipientName }}</p>
+          <p class="font-body text-sm text-grafite/60">{{ o.shippingCity }}/{{ o.shippingState }}</p>
+          @if (o.estimatedDeliveryDays) {
+            <p class="font-mono text-xs text-grafite/50 mt-1">até {{ o.estimatedDeliveryDays }} dias úteis</p>
+          }
+          @if (o.trackingCode) {
+            <p class="font-mono text-xs text-grafite/50">Rastreio: {{ o.trackingCode }}</p>
+          }
+        </div>
+      }
+
+      @if (o.refundReason) {
+        <div class="bg-white border border-areia rounded-2xl p-5 sm:p-6 flex flex-col gap-1 mb-6">
+          <h2 class="font-mono text-xs uppercase tracking-wide text-grafite/50 mb-2">Estorno</h2>
+          <p class="font-body text-sm text-grafite/70">Motivo: {{ o.refundReason }}</p>
+          @if (o.refundRequestedAt) {
+            <p class="font-mono text-xs text-grafite/50">Solicitado em {{ o.refundRequestedAt | date: 'dd/MM/yyyy' }}</p>
+          }
+        </div>
+      }
+
+      <p class="font-mono text-xs text-grafite/40 mb-6">
+        Feito em {{ o.createdAt | date: "dd/MM/yyyy 'às' HH:mm" }}
+      </p>
+
+      @if (canCancel()) {
+        <button
+          type="button"
+          (click)="cancelOrder()"
+          [disabled]="submitting()"
+          class="font-mono text-sm uppercase tracking-wide text-vinho border border-vinho rounded-lg px-5 py-3 hover:bg-vinho hover:text-osso transition-colors disabled:opacity-60"
+        >
+          {{ submitting() ? 'Cancelando…' : 'Cancelar pedido' }}
+        </button>
+      }
+
+      @if (canRequestRefund()) {
+        @if (!showRefundForm()) {
+          <button
+            type="button"
+            (click)="toggleRefundForm()"
+            class="font-mono text-sm uppercase tracking-wide text-vinho border border-vinho rounded-lg px-5 py-3 hover:bg-vinho hover:text-osso transition-colors"
+          >
+            Solicitar estorno
+          </button>
+        } @else {
+          <div class="bg-white border border-areia rounded-2xl p-5 sm:p-6 flex flex-col gap-3">
+            <label class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Motivo do estorno</label>
+            <textarea
+              [value]="refundReason()"
+              (input)="refundReason.set($any($event.target).value)"
+              rows="3"
+              class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota resize-none"
+            ></textarea>
+            <div class="flex gap-3">
+              <button
+                type="button"
+                (click)="toggleRefundForm()"
+                class="font-mono text-xs uppercase tracking-wide text-grafite/60 border border-areia rounded-lg px-5 py-3"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                (click)="submitRefundRequest()"
+                [disabled]="submitting() || refundReason().trim().length === 0"
+                class="flex-1 font-mono text-xs uppercase tracking-wide text-osso bg-vinho rounded-lg px-5 py-3 disabled:opacity-60"
+              >
+                {{ submitting() ? 'Enviando…' : 'Enviar solicitação' }}
+              </button>
+            </div>
+          </div>
+        }
+      }
+
+      @if (actionDone() === 'cancelled') {
+        <p class="font-mono text-xs text-grafite/60 mt-3">Pedido cancelado.</p>
+      }
+      @if (actionDone() === 'refund-requested') {
+        <p class="font-mono text-xs text-grafite/60 mt-3">Estorno solicitado — aguardando análise.</p>
+      }
+    }
+  </main>
+</div>

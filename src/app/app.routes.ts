@@ -1,0 +1,141 @@
+import { Routes } from '@angular/router';
+import { roleGuard } from './core/guards/role.guard';
+
+export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./features/catalog/catalog-list/catalog-list.component').then((m) => m.CatalogListComponent),
+  },
+  {
+    path: 'pecas/:id',
+    loadComponent: () =>
+      import('./features/catalog/piece-detail/piece-detail.component').then((m) => m.PieceDetailComponent),
+  },
+  {
+    path: 'conjuntos/:id',
+    loadComponent: () =>
+      import('./features/catalog/set-detail/set-detail.component').then((m) => m.SetDetailComponent),
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'signup',
+    loadComponent: () => import('./features/auth/signup/signup.component').then((m) => m.SignupComponent),
+  },
+  {
+    path: 'carrinho',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () => import('./features/cart/cart-page/cart-page.component').then((m) => m.CartPageComponent),
+  },
+  {
+    path: 'checkout',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () =>
+      import('./features/checkout/checkout-page/checkout-page.component').then((m) => m.CheckoutPageComponent),
+  },
+  {
+    path: 'checkout/:orderId',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () =>
+      import('./features/checkout/checkout-page/checkout-page.component').then((m) => m.CheckoutPageComponent),
+  },
+  {
+    path: 'pedidos',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () => import('./features/orders/order-list/order-list.component').then((m) => m.OrderListComponent),
+  },
+  {
+    path: 'pedidos/:id',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () =>
+      import('./features/orders/order-detail/order-detail.component').then((m) => m.OrderDetailComponent),
+  },
+  {
+    path: 'cliente',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () =>
+      import('./features/cliente/cliente-home.component').then((m) => m.ClienteHomeComponent),
+  },
+  {
+    path: 'cliente/enderecos',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () => import('./features/cliente/addresses/addresses.component').then((m) => m.AddressesComponent),
+  },
+  {
+    path: 'admin',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () => import('./features/admin/home/admin-home.component').then((m) => m.AdminHomeComponent),
+  },
+  {
+    path: 'admin/dashboard',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
+  },
+  {
+    path: 'admin/pedidos',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/orders/order-list/admin-order-list.component').then(
+        (m) => m.AdminOrderListComponent
+      ),
+  },
+  {
+    path: 'admin/pedidos/:id',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/orders/order-detail/admin-order-detail.component').then(
+        (m) => m.AdminOrderDetailComponent
+      ),
+  },
+  {
+    path: 'admin/categorias',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/categories/admin-categories.component').then(
+        (m) => m.AdminCategoriesComponent
+      ),
+  },
+  {
+    path: 'admin/pecas',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/pieces/admin-pieces-list.component').then(
+        (m) => m.AdminPiecesListComponent
+      ),
+  },
+  {
+    path: 'admin/pecas/novo',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/pieces/admin-piece-form.component').then((m) => m.AdminPieceFormComponent),
+  },
+  {
+    path: 'admin/pecas/:id/editar',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/pieces/admin-piece-form.component').then((m) => m.AdminPieceFormComponent),
+  },
+  {
+    path: 'admin/conjuntos',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/sets/admin-sets-list.component').then((m) => m.AdminSetsListComponent),
+  },
+  {
+    path: 'admin/conjuntos/novo',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/sets/admin-set-form.component').then((m) => m.AdminSetFormComponent),
+  },
+  {
+    path: 'admin/conjuntos/:id/editar',
+    canMatch: [roleGuard('ADMIN')],
+    loadComponent: () =>
+      import('./features/admin/catalog/sets/admin-set-form.component').then((m) => m.AdminSetFormComponent),
+  },
+];

@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-osso text-grafite font-body;
+  font-size: 17px;
+}
+
+.font-display {
+  font-weight: 700;
+}
+
+.bg-leaves {
+  background-image: url('/pattern-leaves.svg');
+  background-repeat: repeat;
+  background-size: 260px 260px;
+}

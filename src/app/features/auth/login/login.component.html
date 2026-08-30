@@ -1,0 +1,63 @@
+<div class="min-h-screen bg-osso bg-leaves flex items-center justify-center px-4">
+  <div class="w-full max-w-sm">
+    <app-back-link to="/" label="Voltar ao catálogo" />
+
+    <div class="text-center mb-8">
+      <p class="font-mono text-xs tracking-[2px] uppercase text-vinho mb-1">Barro &amp; Vinil</p>
+      <h1 class="font-display uppercase tracking-wide text-5xl text-grafite">Entrar</h1>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="bg-white border border-areia rounded-2xl p-5 sm:p-8 flex flex-col gap-5"
+    >
+      @if (errorMessage()) {
+        <p class="font-mono text-xs text-vinho border border-vinho/30 bg-vinho/5 rounded-lg px-3 py-2">
+          {{ errorMessage() }}
+        </p>
+      }
+
+      <div class="flex flex-col gap-1.5">
+        <label for="email" class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">E-mail</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+        />
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+          <span class="font-mono text-[11px] text-vinho">Informe um e-mail válido.</span>
+        }
+      </div>
+
+      <div class="flex flex-col gap-1.5">
+        <label for="password" class="font-mono text-[11px] tracking-wide uppercase text-grafite/70">Senha</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          class="font-body border border-areia rounded-lg px-4 py-3 text-grafite focus:outline-none focus:border-terracota"
+        />
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+          <span class="font-mono text-[11px] text-vinho">Informe sua senha.</span>
+        }
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loading()"
+        class="btn font-display uppercase tracking-wide text-base px-7 py-3 rounded-lg border-2 border-grafite bg-terracota text-osso font-semibold disabled:opacity-60"
+      >
+        {{ loading() ? 'Entrando…' : 'Entrar' }}
+      </button>
+    </form>
+
+    <p class="text-center font-body text-base text-grafite/70 mt-6">
+      Não tem conta?
+      <a routerLink="/signup" class="text-vinho underline">Criar conta</a>
+    </p>
+  </div>
+</div>
