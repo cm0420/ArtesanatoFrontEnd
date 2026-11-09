@@ -45,7 +45,7 @@ Backend roda em `http://localhost:8080` (porta fixa; o Postgres por trás dele m
 - `POST /auth/logout` — sem body, usa cookie.
 - Resposta de login/signup/refresh: `{ accessToken, tokenType, expiresIn }`. Guardar `accessToken` **em memória** (nunca `localStorage`), mandar em todo request autenticado como `Authorization: Bearer <token>`.
 - Refresh token vem automaticamente como cookie `HttpOnly`/`Secure`/`SameSite=Strict` — o frontend nunca lê nem manipula esse cookie diretamente, só precisa configurar `withCredentials: true` nas chamadas do `HttpClient` (ou globalmente, via `provideHttpClient(withInterceptors([...]))` + um interceptor que seta isso em toda requisição), pra o navegador incluir o cookie sozinho.
-- **CORS**: o backend está configurado com `allowedOrigins` fixo em `http://localhost:3000` — o Angular CLI, por padrão, serve em `http://localhost:4200`. **Precisa editar** `SecurityConfig.java` no backend (`corsConfigurationSource()`) pra incluir `http://localhost:4200`, senão toda chamada vai falhar por CORS assim que o Angular subir.
+- **CORS**: o backend libera `http://localhost:4200` por padrão (propriedade `app.cors.allowed-origins`, variável `CORS_ALLOWED_ORIGINS`, separada por vírgula). Em produção, definir o domínio real do front.
 
 ### Catálogo (público, sem login)
 
