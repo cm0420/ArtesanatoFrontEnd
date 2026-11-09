@@ -24,7 +24,7 @@ interface NavGroup {
   template: `
     <!-- barra do topo no celular -->
     <div class="lg:hidden glass sticky top-0 z-40 border-b border-hairline/80 h-16 px-4 flex items-center justify-between">
-      <a routerLink="/admin" class="font-display text-2xl text-ink">Barro &amp; Vinil</a>
+      <a routerLink="/admin" class="font-display text-2xl text-ink">Jequí</a>
       <button
         type="button"
         class="h-11 w-11 rounded-full border border-hairline bg-surface/70 flex items-center justify-center text-ink"
@@ -53,7 +53,7 @@ interface NavGroup {
       <div class="sidebar-glow" aria-hidden="true"></div>
 
       <div class="relative px-6 pt-7 pb-6">
-        <a routerLink="/admin" class="block font-display text-[28px] leading-none text-canvas">Barro &amp; Vinil</a>
+        <a routerLink="/admin" class="block font-display text-[28px] leading-none text-canvas">Jequí</a>
         <span class="mt-2 inline-flex items-center gap-1.5 rounded-full bg-canvas/10 px-2.5 py-1 font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-gold-pale">
           <span class="h-1.5 w-1.5 rounded-full bg-gold-pale" aria-hidden="true"></span>
           Painel admin

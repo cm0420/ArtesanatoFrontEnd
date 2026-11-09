@@ -22,6 +22,8 @@ module.exports = {
         espresso: '#39221e', // marrom profundo (rodapé, faixas)
         gold: '#af751b',
         'gold-pale': '#ddbe78',
+        tide: '#2a6f7b',     // azul-cerâmica: só em detalhes, contrasta com o verde
+        'tide-pale': '#bcd6d9',
         danger: '#a3341f',   // erros
       },
       fontFamily: {

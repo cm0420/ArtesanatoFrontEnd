@@ -93,6 +93,9 @@
               <input id="f-phone"
  autocomplete="tel"
                 type="tel"
+                inputmode="tel"
+                maxlength="16"
+                appMask="phone"
                 formControlName="phone"
                 class="font-body border border-hairline rounded-xl px-4 py-3 text-ink focus:outline-none focus:border-forest focus:ring-4 focus:ring-forest/10"
               />
@@ -117,7 +120,7 @@
         </form>
       }
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <a
           routerLink="/carrinho"
           class="block bg-surface border border-hairline rounded-3xl p-5 sm:p-6 hover:border-forest transition-colors"
@@ -140,6 +143,17 @@
         >
           <h2 class="font-display text-xl text-ink">Meus endereços</h2>
           <p class="font-body text-base text-ink/60 mt-1">Gerenciar endereços de entrega.</p>
+        </a>
+
+        <a
+          routerLink="/cliente/cartoes"
+          class="block bg-surface border border-hairline rounded-3xl p-5 sm:p-6 hover:border-forest transition-colors"
+        >
+          <div class="flex items-center gap-2">
+            <h2 class="font-display text-xl text-ink">Formas de pagamento</h2>
+            <span class="font-body text-[9px] font-semibold uppercase tracking-wide text-gold border border-gold/40 bg-gold/10 rounded-full px-2 py-0.5">Em dev</span>
+          </div>
+          <p class="font-body text-base text-ink/60 mt-1">Cadastrar cartão para pagar na loja.</p>
         </a>
       </div>
     }

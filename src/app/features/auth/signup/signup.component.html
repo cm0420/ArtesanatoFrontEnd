@@ -3,7 +3,7 @@
     <app-back-link to="/" label="Voltar ao catálogo" />
 
     <div class="text-center mb-8">
-      <p class="font-body text-xs tracking-[2px] uppercase text-clay mb-1">Barro &amp; Vinil</p>
+      <p class="font-body text-xs tracking-[2px] uppercase text-clay mb-1">Jequí</p>
       <h1 class="font-display text-5xl text-ink">Criar conta</h1>
     </div>
 
@@ -82,6 +82,9 @@
           <input
             id="phone"
             type="tel"
+            inputmode="tel"
+            maxlength="16"
+            appMask="phone"
             formControlName="phone"
             placeholder="(11) 91234-5678"
             autocomplete="tel"
@@ -97,6 +100,9 @@
           <input
             id="cpf"
             type="text"
+            inputmode="numeric"
+            maxlength="14"
+            appMask="cpf"
             formControlName="cpf"
             placeholder="000.000.000-00"
             class="font-body border border-hairline rounded-xl px-4 py-3 text-ink focus:outline-none focus:border-forest focus:ring-4 focus:ring-forest/10"

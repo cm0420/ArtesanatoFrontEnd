@@ -9,6 +9,11 @@ export const routes: Routes = [
       import('./features/catalog/catalog-list/catalog-list.component').then((m) => m.CatalogListComponent),
   },
   {
+    path: 'catalogo',
+    loadComponent: () =>
+      import('./features/catalog/catalog-browse/catalog-browse.component').then((m) => m.CatalogBrowseComponent),
+  },
+  {
     path: 'pecas/:id',
     loadComponent: () =>
       import('./features/catalog/piece-detail/piece-detail.component').then((m) => m.PieceDetailComponent),
@@ -64,6 +69,12 @@ export const routes: Routes = [
     path: 'cliente/enderecos',
     canMatch: [roleGuard('CLIENTE')],
     loadComponent: () => import('./features/cliente/addresses/addresses.component').then((m) => m.AddressesComponent),
+  },
+  {
+    path: 'cliente/cartoes',
+    canMatch: [roleGuard('CLIENTE')],
+    loadComponent: () =>
+      import('./features/cliente/payment-methods/payment-methods.component').then((m) => m.PaymentMethodsComponent),
   },
   {
     path: 'admin',

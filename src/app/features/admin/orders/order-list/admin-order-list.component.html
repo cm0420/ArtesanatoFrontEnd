@@ -4,35 +4,30 @@
 
     <h1 class="font-display text-4xl text-ink mb-8">Pedidos</h1>
 
-    <div class="flex flex-wrap gap-2 mb-8">
-      <button
-        type="button"
-        (click)="selectStatus(null)"
-        class="font-body font-semibold text-sm uppercase tracking-wide px-4 py-2.5 rounded-full border transition-colors"
-        [class.bg-forest]="selectedStatus() === null"
-        [class.text-canvas]="selectedStatus() === null"
-        [class.border-forest]="selectedStatus() === null"
-        [class.border-hairline]="selectedStatus() !== null"
-        [class.text-ink]="selectedStatus() !== null"
-      >
-        Todos
-      </button>
-      @for (status of statusFilters; track status) {
-        @if (status) {
-          <button
-            type="button"
-            (click)="selectStatus(status)"
-            class="font-body font-semibold text-sm uppercase tracking-wide px-4 py-2.5 rounded-full border transition-colors"
-            [class.bg-forest]="selectedStatus() === status"
-            [class.text-canvas]="selectedStatus() === status"
-            [class.border-forest]="selectedStatus() === status"
-            [class.border-hairline]="selectedStatus() !== status"
-            [class.text-ink]="selectedStatus() !== status"
-          >
-            {{ statusLabel[status] }}
-          </button>
+    <div class="bg-surface border border-hairline rounded-3xl p-4 sm:p-5 mb-8 shadow-soft">
+      <p class="font-body text-xs font-semibold uppercase tracking-[0.14em] text-ink/50 mb-3">Filtrar por status</p>
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar pedidos por status">
+        <button
+          type="button"
+          (click)="selectStatus(null)"
+          [attr.aria-pressed]="selectedStatus() === null"
+          [class]="pillClass(selectedStatus() === null)"
+        >
+          Todos
+        </button>
+        @for (status of statusFilters; track status) {
+          @if (status) {
+            <button
+              type="button"
+              (click)="selectStatus(status)"
+              [attr.aria-pressed]="selectedStatus() === status"
+              [class]="pillClass(selectedStatus() === status)"
+            >
+              {{ statusLabel[status] }}
+            </button>
+          }
         }
-      }
+      </div>
     </div>
 
     @if (loading()) {

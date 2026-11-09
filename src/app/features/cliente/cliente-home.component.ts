@@ -7,13 +7,14 @@ import { ClienteService } from './cliente.service';
 import { CustomerResponse } from '../../core/models/customer.model';
 import { ApiError } from '../../core/models/api-error.model';
 import { SiteHeaderComponent } from '../../shared/ui/site-header/site-header.component';
+import { MaskDirective } from '../../shared/directives/mask.directive';
 
 const PHONE_PATTERN = /^\(?\d{2}\)?[\s-]?9?\d{4}-?\d{4}$/;
 
 @Component({
   selector: 'app-cliente-home',
   standalone: true,
-  imports: [SiteHeaderComponent, RouterLink, ReactiveFormsModule],
+  imports: [SiteHeaderComponent, RouterLink, ReactiveFormsModule, MaskDirective],
   templateUrl: './cliente-home.component.html',
 })
 export class ClienteHomeComponent implements OnInit {

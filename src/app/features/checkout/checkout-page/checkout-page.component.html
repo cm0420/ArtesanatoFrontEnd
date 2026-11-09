@@ -138,14 +138,17 @@
               </div>
             </div>
 
-            <button
-              type="button"
-              (click)="pay()"
-              [disabled]="submitting()"
-              class="font-body font-semibold text-base px-7 py-3.5 rounded-full border border-ink bg-forest text-canvas  transition duration-300 active:scale-[0.98] disabled:opacity-60"
-            >
-              {{ submitting() ? 'Processando…' : 'Pagar agora (simulado)' }}
-            </button>
+            <div class="bg-surface border border-hairline rounded-3xl p-5 sm:p-6 flex flex-col items-center text-center gap-3">
+              <span class="font-body text-[10px] font-semibold uppercase tracking-[0.14em] text-gold border border-gold/40 bg-gold/10 rounded-full px-3 py-1">
+                Em desenvolvimento
+              </span>
+              <h2 class="font-display text-2xl text-ink">Pagamento em desenvolvimento</h2>
+              <p class="font-body text-sm text-ink/60 max-w-md">
+                A finalização de pagamento ainda está sendo integrada. Cadastre um cartão abaixo para quando ficar pronto.
+              </p>
+            </div>
+
+            <app-card-form />
           </div>
         }
 

@@ -38,41 +38,7 @@
     min-height: 100vh;
   }
 
-  /* Fundo líquido: três manchas desfocadas que derivam devagar atrás de tudo. */
-  body::before,
-  body::after {
-    content: '';
-    position: fixed;
-    z-index: -1;
-    pointer-events: none;
-    border-radius: 9999px;
-    filter: blur(80px);
-    opacity: 0.55;
-  }
-  body::before {
-    width: 52vw;
-    height: 52vw;
-    top: -14vw;
-    right: -12vw;
-    background:
-      radial-gradient(circle at 30% 30%, #ced4b8 0%, transparent 55%),
-      radial-gradient(circle at 70% 60%, #6fa070 0%, transparent 60%),
-      radial-gradient(circle at 40% 80%, #e2b25c 0%, transparent 55%);
-    opacity: 0.6;
-    animation: drift-a 26s ease-in-out infinite alternate;
-  }
-  body::after {
-    width: 46vw;
-    height: 46vw;
-    bottom: -16vw;
-    left: -14vw;
-    background:
-      radial-gradient(circle at 60% 40%, #e8a86a 0%, transparent 55%),
-      radial-gradient(circle at 30% 70%, #b0654a 0%, transparent 60%),
-      radial-gradient(circle at 70% 80%, #849671 0%, transparent 50%);
-    opacity: 0.45;
-    animation: drift-b 32s ease-in-out infinite alternate;
-  }
+  /* Sem fundo líquido de página inteira: o vidro fica discreto (header + hero). */
 
   ::selection {
     background: #224228;
@@ -178,40 +144,41 @@ a.rounded-3xl:hover {
 }
 
 /* Vitrine: lava-lamp de quatro cores da paleta, cada gota num ritmo. */
+/* Brilho ambiente espalhado atrás do topo: manchas largas e suaves, sem núcleo denso. */
 .hero-liquid {
   position: absolute;
   z-index: -1;
-  top: 0;
-  right: -4%;
-  width: min(560px, 70vw);
-  aspect-ratio: 1;
+  top: -14%;
+  left: -8%;
+  right: -8%;
+  height: 150%;
   pointer-events: none;
 }
 .hero-liquid span {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(46px);
-  opacity: 0.6;
+  filter: blur(96px);
+  opacity: 0.28;
 }
 .hero-liquid span:nth-child(1) {
-  inset: 10% 30% 35% 5%;
+  inset: 2% 58% 46% 4%;
   background: #6fa070;
   animation: lava-1 15s ease-in-out infinite alternate;
 }
 .hero-liquid span:nth-child(2) {
-  inset: 25% 5% 20% 35%;
+  inset: 8% 4% 40% 60%;
   background: #e2b25c;
   animation: lava-2 19s ease-in-out infinite alternate;
 }
 .hero-liquid span:nth-child(3) {
-  inset: 45% 35% 0% 15%;
+  inset: 48% 30% 2% 50%;
   background: #d07a52;
   animation: lava-3 17s ease-in-out infinite alternate;
 }
 .hero-liquid span:nth-child(4) {
-  inset: 5% 10% 55% 45%;
-  background: #9fbf8a;
-  opacity: 0.55;
+  inset: 44% 62% 6% 6%;
+  background: #2a6f7b; /* único respingo de azul, só no hero */
+  opacity: 0.22;
   animation: lava-2 23s ease-in-out infinite alternate-reverse;
 }
 @keyframes lava-1 {
@@ -302,6 +269,59 @@ a.rounded-3xl:hover {
   66% { border-radius: 35% 65% 52% 48% / 38% 60% 40% 62%; transform: rotate(-6deg) scale(0.98); }
 }
 
+/* Retorno de ação: a contagem do carrinho pula a cada item adicionado. */
+.cart-bump {
+  animation: bump 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes bump {
+  40% { transform: scale(1.35); }
+}
+
+/* Momento de entrada da vitrine: sublinhado que se desenha sob "à mão". */
+.draw-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  padding-bottom: 2px;
+  animation: draw 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+}
+@keyframes draw {
+  to { background-size: 100% 2px; }
+}
+
+/* Vitrine do hero: três molduras sobrepostas que flutuam de leve. */
+.showcase-frame {
+  will-change: transform;
+}
+.showcase-frame-1 {
+  top: 0;
+  left: 2%;
+  width: 60%;
+  height: 56%;
+  border-radius: 2.75rem 3.25rem 2.5rem 3rem;
+  animation: float-y 9s ease-in-out infinite;
+}
+.showcase-frame-2 {
+  top: 26%;
+  right: 0;
+  width: 50%;
+  height: 54%;
+  border-radius: 3.25rem 2.5rem 3rem 2.75rem;
+  animation: float-y 11s ease-in-out infinite 0.8s;
+}
+.showcase-frame-3 {
+  bottom: 0;
+  left: 14%;
+  width: 46%;
+  height: 40%;
+  border-radius: 2.5rem 3rem 2.75rem 3.25rem;
+  animation: float-y 10s ease-in-out infinite 1.6s;
+}
+@keyframes float-y {
+  50% { transform: translateY(-14px) rotate(-0.6deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -313,5 +333,9 @@ a.rounded-3xl:hover {
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+  /* Sem animar o desenho: já mostra o sublinhado completo. */
+  .draw-underline {
+    background-size: 100% 2px;
   }
 }

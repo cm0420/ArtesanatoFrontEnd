@@ -27,6 +27,9 @@
       <input id="f-recipientPhone"
  autocomplete="tel"
         type="tel"
+        inputmode="tel"
+        maxlength="16"
+        appMask="phone"
         formControlName="recipientPhone"
         placeholder="(11) 91234-5678"
         class="font-body border border-hairline rounded-xl px-4 py-3 text-ink focus:outline-none focus:border-forest focus:ring-4 focus:ring-forest/10"
@@ -38,10 +41,20 @@
  autocomplete="postal-code"
  inputmode="numeric"
         type="text"
+        maxlength="9"
+        appMask="cep"
+        (input)="onZipInput($event)"
         formControlName="zipCode"
-        placeholder="00000000"
+        placeholder="00000-000"
         class="font-body border border-hairline rounded-xl px-4 py-3 text-ink focus:outline-none focus:border-forest focus:ring-4 focus:ring-forest/10"
       />
+      @if (cepLoading()) {
+        <span class="font-body text-[11px] text-ink/50">Buscando endereço…</span>
+      } @else if (cepError()) {
+        <span class="font-body text-[11px] text-danger">{{ cepError() }}</span>
+      } @else {
+        <span class="font-body text-[11px] text-ink/40">Preenche rua, bairro e cidade automaticamente.</span>
+      }
     </div>
   </div>
 

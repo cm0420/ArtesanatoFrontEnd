@@ -5,14 +5,15 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ApiError } from '../../../core/models/api-error.model';
 import { BackLinkComponent } from '../../../shared/ui/back-link/back-link.component';
+import { MaskDirective } from '../../../shared/directives/mask.directive';
+import { cpfValidator } from '../../../core/validators/cpf.validator';
 
 const PHONE_PATTERN = /^\(?\d{2}\)?[\s-]?9?\d{4}-?\d{4}$/;
-const CPF_PATTERN = /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/;
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, BackLinkComponent],
+  imports: [ReactiveFormsModule, RouterLink, BackLinkComponent, MaskDirective],
   templateUrl: './signup.component.html',
 })
 export class SignupComponent {
@@ -26,7 +27,7 @@ export class SignupComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]],
     phone: ['', [Validators.required, Validators.pattern(PHONE_PATTERN)]],
-    cpf: ['', [Validators.required, Validators.pattern(CPF_PATTERN)]],
+    cpf: ['', [Validators.required, cpfValidator]],
   });
 
   readonly loading = signal(false);

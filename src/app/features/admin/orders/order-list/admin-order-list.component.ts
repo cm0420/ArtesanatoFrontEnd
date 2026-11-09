@@ -55,6 +55,13 @@ export class AdminOrderListComponent implements OnInit {
     this.loadOrders();
   }
 
+  pillClass(active: boolean): string {
+    const base = 'font-body text-sm font-medium px-4 py-2 rounded-full border transition-colors';
+    return active
+      ? `${base} bg-forest text-canvas border-forest`
+      : `${base} bg-surface text-ink border-hairline hover:border-forest hover:text-forest`;
+  }
+
   statusClass(status: OrderStatus): string {
     if (status === 'CANCELADO' || status === 'EXPIRADO' || status === 'ESTORNADO' || status === 'ESTORNO_SOLICITADO') {
       return 'text-clay';

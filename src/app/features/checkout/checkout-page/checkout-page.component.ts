@@ -13,13 +13,14 @@ import { ApiError } from '../../../core/models/api-error.model';
 import { SiteHeaderComponent } from '../../../shared/ui/site-header/site-header.component';
 import { BackLinkComponent } from '../../../shared/ui/back-link/back-link.component';
 import { AddressFormComponent } from '../../../shared/ui/address-form/address-form.component';
+import { CardFormComponent } from '../../payments/card-form/card-form.component';
 
 type Step = 'address' | 'shipping' | 'payment' | 'result';
 
 @Component({
   selector: 'app-checkout-page',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe, SiteHeaderComponent, BackLinkComponent, AddressFormComponent],
+  imports: [RouterLink, CurrencyPipe, SiteHeaderComponent, BackLinkComponent, AddressFormComponent, CardFormComponent],
   templateUrl: './checkout-page.component.html',
 })
 export class CheckoutPageComponent implements OnInit {

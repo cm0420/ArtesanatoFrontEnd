@@ -50,3 +50,6 @@ skills-lock.json
 
 # Backend context docs (live in the backend repo, kept locally only for reference)
 modulo-*.md
+
+# Vercel
+.vercel
