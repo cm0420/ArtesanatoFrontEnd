@@ -3,8 +3,6 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AdminOrdersService } from '../../admin-orders.service';
 import { ORDER_STATUS_LABEL, OrderResponse, OrderStatus } from '../../../../core/models/order.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
-import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 const PAGE_SIZE = 15;
 
@@ -23,7 +21,7 @@ const STATUS_FILTERS: (OrderStatus | null)[] = [
 @Component({
   selector: 'app-admin-order-list',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe, DatePipe, AdminHeaderComponent, BackLinkComponent],
+  imports: [RouterLink, CurrencyPipe, DatePipe],
   templateUrl: './admin-order-list.component.html',
 })
 export class AdminOrderListComponent implements OnInit {
@@ -59,12 +57,12 @@ export class AdminOrderListComponent implements OnInit {
 
   statusClass(status: OrderStatus): string {
     if (status === 'CANCELADO' || status === 'EXPIRADO' || status === 'ESTORNADO' || status === 'ESTORNO_SOLICITADO') {
-      return 'text-vinho';
+      return 'text-clay';
     }
     if (status === 'PAGO' || status === 'ENVIADO' || status === 'ENTREGUE') {
-      return 'text-terracota';
+      return 'text-forest';
     }
-    return 'text-grafite/60';
+    return 'text-ink/60';
   }
 
   private loadOrders(): void {

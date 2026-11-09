@@ -1,21 +1,19 @@
-<div class="min-h-screen bg-osso bg-leaves">
-  <app-admin-header />
+<div class="min-h-screen">
 
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-    <app-back-link to="/admin" label="Painel" />
+  <main id="conteudo" class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-    <h1 class="font-display uppercase tracking-wide text-4xl text-grafite mb-8">Pedidos</h1>
+    <h1 class="font-display text-4xl text-ink mb-8">Pedidos</h1>
 
     <div class="flex flex-wrap gap-2 mb-8">
       <button
         type="button"
         (click)="selectStatus(null)"
-        class="font-mono font-semibold text-sm uppercase tracking-wide px-4 py-2.5 rounded-lg border-2 transition-colors"
-        [class.bg-terracota]="selectedStatus() === null"
-        [class.text-osso]="selectedStatus() === null"
-        [class.border-terracota]="selectedStatus() === null"
-        [class.border-areia]="selectedStatus() !== null"
-        [class.text-grafite]="selectedStatus() !== null"
+        class="font-body font-semibold text-sm uppercase tracking-wide px-4 py-2.5 rounded-full border transition-colors"
+        [class.bg-forest]="selectedStatus() === null"
+        [class.text-canvas]="selectedStatus() === null"
+        [class.border-forest]="selectedStatus() === null"
+        [class.border-hairline]="selectedStatus() !== null"
+        [class.text-ink]="selectedStatus() !== null"
       >
         Todos
       </button>
@@ -24,12 +22,12 @@
           <button
             type="button"
             (click)="selectStatus(status)"
-            class="font-mono font-semibold text-sm uppercase tracking-wide px-4 py-2.5 rounded-lg border-2 transition-colors"
-            [class.bg-terracota]="selectedStatus() === status"
-            [class.text-osso]="selectedStatus() === status"
-            [class.border-terracota]="selectedStatus() === status"
-            [class.border-areia]="selectedStatus() !== status"
-            [class.text-grafite]="selectedStatus() !== status"
+            class="font-body font-semibold text-sm uppercase tracking-wide px-4 py-2.5 rounded-full border transition-colors"
+            [class.bg-forest]="selectedStatus() === status"
+            [class.text-canvas]="selectedStatus() === status"
+            [class.border-forest]="selectedStatus() === status"
+            [class.border-hairline]="selectedStatus() !== status"
+            [class.text-ink]="selectedStatus() !== status"
           >
             {{ statusLabel[status] }}
           </button>
@@ -38,24 +36,24 @@
     </div>
 
     @if (loading()) {
-      <p class="font-mono text-base text-grafite/60">Carregando…</p>
+      <p class="font-body text-base text-ink/60">Carregando…</p>
     } @else if (orders().length === 0) {
-      <p class="font-mono text-base text-grafite/60">Nenhum pedido encontrado.</p>
+      <p class="font-body text-base text-ink/60">Nenhum pedido encontrado.</p>
     } @else {
       <div class="flex flex-col gap-4">
         @for (order of orders(); track order.id) {
           <a
             [routerLink]="['/admin/pedidos', order.id]"
-            class="block bg-white border border-areia rounded-2xl p-5 hover:border-terracota transition-colors"
+            class="block bg-surface border border-hairline rounded-3xl p-5 hover:border-forest transition-colors"
           >
             <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-sm font-semibold uppercase tracking-wide" [class]="statusClass(order.status)">
+              <span class="font-body text-sm font-semibold uppercase tracking-wide" [class]="statusClass(order.status)">
                 {{ statusLabel[order.status] }}
               </span>
-              <span class="font-mono text-sm text-grafite/50">{{ order.createdAt | date: 'dd/MM/yyyy' }}</span>
+              <span class="font-body text-sm text-ink/50">{{ order.createdAt | date: 'dd/MM/yyyy' }}</span>
             </div>
-            <p class="font-body text-lg text-grafite">{{ order.recipientName ?? 'Sem destinatário' }}</p>
-            <p class="font-mono font-semibold text-grafite mt-1">{{ order.totalAmount | currency: 'BRL' }}</p>
+            <p class="font-body text-lg text-ink">{{ order.recipientName ?? 'Sem destinatário' }}</p>
+            <p class="font-body font-semibold text-ink mt-1">{{ order.totalAmount | currency: 'BRL' }}</p>
           </a>
         }
       </div>
@@ -66,16 +64,16 @@
             type="button"
             (click)="goToPage(-1)"
             [disabled]="!hasPrev()"
-            class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 border-grafite text-grafite disabled:opacity-30"
+            class="font-body font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-full border border-ink text-ink disabled:opacity-30"
           >
             Anterior
           </button>
-          <span class="font-mono text-sm text-grafite/70">Página {{ page() + 1 }} de {{ totalPages() }}</span>
+          <span class="font-body text-sm text-ink/70">Página {{ page() + 1 }} de {{ totalPages() }}</span>
           <button
             type="button"
             (click)="goToPage(1)"
             [disabled]="!hasNext()"
-            class="font-mono font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-lg border-2 border-grafite text-grafite disabled:opacity-30"
+            class="font-body font-semibold text-sm uppercase tracking-wide px-5 py-3 rounded-full border border-ink text-ink disabled:opacity-30"
           >
             Próxima
           </button>

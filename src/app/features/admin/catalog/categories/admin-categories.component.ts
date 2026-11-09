@@ -5,13 +5,11 @@ import { CatalogService } from '../../../catalog/catalog.service';
 import { AdminCatalogService } from '../../admin-catalog.service';
 import { CategoryResponse } from '../../../../core/models/catalog.model';
 import { ApiError } from '../../../../core/models/api-error.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
-import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 @Component({
   selector: 'app-admin-categories',
   standalone: true,
-  imports: [ReactiveFormsModule, AdminHeaderComponent, BackLinkComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './admin-categories.component.html',
 })
 export class AdminCategoriesComponent implements OnInit {
@@ -56,6 +54,7 @@ export class AdminCategoriesComponent implements OnInit {
   }
 
   deleteCategory(category: CategoryResponse): void {
+    if (!confirm('Excluir esta categoria? Essa ação não pode ser desfeita.')) return;
     this.deletingId.set(category.id);
     this.adminCatalogService.deleteCategory(category.id).subscribe({
       next: () => {

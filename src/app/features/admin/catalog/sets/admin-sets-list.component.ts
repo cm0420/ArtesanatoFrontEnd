@@ -6,15 +6,13 @@ import { CatalogService } from '../../../catalog/catalog.service';
 import { AdminCatalogService } from '../../admin-catalog.service';
 import { PieceSetResponse } from '../../../../core/models/catalog.model';
 import { ApiError } from '../../../../core/models/api-error.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
-import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 const PAGE_SIZE = 12;
 
 @Component({
   selector: 'app-admin-sets-list',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe, AdminHeaderComponent, BackLinkComponent],
+  imports: [RouterLink, CurrencyPipe],
   templateUrl: './admin-sets-list.component.html',
 })
 export class AdminSetsListComponent implements OnInit {
@@ -41,6 +39,7 @@ export class AdminSetsListComponent implements OnInit {
   }
 
   deleteSet(set: PieceSetResponse): void {
+    if (!confirm('Excluir este conjunto? Essa ação não pode ser desfeita.')) return;
     this.deletingId.set(set.id);
     this.adminCatalogService.deleteSet(set.id).subscribe({
       next: () => {

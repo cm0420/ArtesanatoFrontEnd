@@ -2,7 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { BestSellingPieceResponse, SalesReportResponse } from '../../core/models/admin.model';
+import {
+  BestSellingPieceResponse,
+  DailySalesResponse,
+  OrderStatusCountResponse,
+  SalesReportResponse,
+} from '../../core/models/admin.model';
 import { OrderResponse } from '../../core/models/order.model';
 import { Page } from '../../core/models/page.model';
 
@@ -13,6 +18,15 @@ export class AdminService {
   getSalesReport(startDate: string, endDate: string): Observable<SalesReportResponse> {
     const params = new HttpParams().set('startDate', startDate).set('endDate', endDate);
     return this.http.get<SalesReportResponse>(`${environment.apiUrl}/api/admin/reports/sales`, { params });
+  }
+
+  getDailySales(startDate: string, endDate: string): Observable<DailySalesResponse[]> {
+    const params = new HttpParams().set('startDate', startDate).set('endDate', endDate);
+    return this.http.get<DailySalesResponse[]>(`${environment.apiUrl}/api/admin/reports/sales-daily`, { params });
+  }
+
+  getOrdersByStatus(): Observable<OrderStatusCountResponse[]> {
+    return this.http.get<OrderStatusCountResponse[]>(`${environment.apiUrl}/api/admin/reports/orders-by-status`);
   }
 
   getBestSellingPieces(limit: number): Observable<BestSellingPieceResponse[]> {

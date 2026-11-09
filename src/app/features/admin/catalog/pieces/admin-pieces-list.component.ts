@@ -6,15 +6,13 @@ import { CatalogService } from '../../../catalog/catalog.service';
 import { AdminCatalogService } from '../../admin-catalog.service';
 import { PieceResponse } from '../../../../core/models/catalog.model';
 import { ApiError } from '../../../../core/models/api-error.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
-import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 const PAGE_SIZE = 12;
 
 @Component({
   selector: 'app-admin-pieces-list',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe, AdminHeaderComponent, BackLinkComponent],
+  imports: [RouterLink, CurrencyPipe],
   templateUrl: './admin-pieces-list.component.html',
 })
 export class AdminPiecesListComponent implements OnInit {
@@ -46,6 +44,7 @@ export class AdminPiecesListComponent implements OnInit {
   }
 
   deletePiece(piece: PieceResponse): void {
+    if (!confirm('Excluir esta peça? Essa ação não pode ser desfeita.')) return;
     this.deletingId.set(piece.id);
     this.adminCatalogService.deletePiece(piece.id).subscribe({
       next: () => {

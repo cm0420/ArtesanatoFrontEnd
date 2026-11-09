@@ -6,13 +6,12 @@ import { CatalogService } from '../../../catalog/catalog.service';
 import { AdminCatalogService } from '../../admin-catalog.service';
 import { CategoryResponse } from '../../../../core/models/catalog.model';
 import { ApiError } from '../../../../core/models/api-error.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
 import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 @Component({
   selector: 'app-admin-piece-form',
   standalone: true,
-  imports: [ReactiveFormsModule, AdminHeaderComponent, BackLinkComponent],
+  imports: [ReactiveFormsModule, BackLinkComponent],
   templateUrl: './admin-piece-form.component.html',
 })
 export class AdminPieceFormComponent implements OnInit {

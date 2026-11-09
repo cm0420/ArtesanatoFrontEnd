@@ -36,3 +36,29 @@ export interface AdminOrderDetailResponse {
   customerPhone: string;
   payments: PaymentResponse[];
 }
+
+export interface DailySalesResponse {
+  date: string;
+  totalOrders: number;
+  totalRevenue: number;
+}
+
+export interface OrderStatusCountResponse {
+  status: string;
+  count: number;
+}
+
+export type UserRole = 'ADMIN' | 'CLIENTE';
+
+export interface UserResponse {
+  id: string;
+  email: string;
+  role: UserRole;
+  createdAt: string;
+}
+
+export interface UserCreateRequest {
+  email: string;
+  password: string;
+  role: UserRole;
+}

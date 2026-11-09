@@ -15,6 +15,8 @@ export class AuthService {
 
   readonly isAuthenticated = computed(() => this.accessToken() !== null);
   readonly role = computed<Role | null>(() => this.decoded()?.role ?? null);
+  readonly userId = computed(() => this.decoded()?.userId ?? null);
+  readonly email = computed(() => this.decoded()?.sub ?? null);
 
   // Refresh em andamento, compartilhado: várias requisições com 401 ao mesmo tempo
   // disparam um refresh só (o backend rotaciona o token — o segundo uso falharia).

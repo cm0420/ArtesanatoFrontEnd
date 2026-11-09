@@ -68,74 +68,73 @@ export const routes: Routes = [
   {
     path: 'admin',
     canMatch: [roleGuard('ADMIN')],
-    loadComponent: () => import('./features/admin/home/admin-home.component').then((m) => m.AdminHomeComponent),
-  },
-  {
-    path: 'admin/dashboard',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
-  },
-  {
-    path: 'admin/pedidos',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/orders/order-list/admin-order-list.component').then(
-        (m) => m.AdminOrderListComponent
-      ),
-  },
-  {
-    path: 'admin/pedidos/:id',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/orders/order-detail/admin-order-detail.component').then(
-        (m) => m.AdminOrderDetailComponent
-      ),
-  },
-  {
-    path: 'admin/categorias',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/categories/admin-categories.component').then(
-        (m) => m.AdminCategoriesComponent
-      ),
-  },
-  {
-    path: 'admin/pecas',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/pieces/admin-pieces-list.component').then(
-        (m) => m.AdminPiecesListComponent
-      ),
-  },
-  {
-    path: 'admin/pecas/novo',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/pieces/admin-piece-form.component').then((m) => m.AdminPieceFormComponent),
-  },
-  {
-    path: 'admin/pecas/:id/editar',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/pieces/admin-piece-form.component').then((m) => m.AdminPieceFormComponent),
-  },
-  {
-    path: 'admin/conjuntos',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/sets/admin-sets-list.component').then((m) => m.AdminSetsListComponent),
-  },
-  {
-    path: 'admin/conjuntos/novo',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/sets/admin-set-form.component').then((m) => m.AdminSetFormComponent),
-  },
-  {
-    path: 'admin/conjuntos/:id/editar',
-    canMatch: [roleGuard('ADMIN')],
-    loadComponent: () =>
-      import('./features/admin/catalog/sets/admin-set-form.component').then((m) => m.AdminSetFormComponent),
+    loadComponent: () => import('./features/admin/shell/admin-shell.component').then((m) => m.AdminShellComponent),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./features/admin/dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
+      },
+      { path: 'dashboard', redirectTo: '', pathMatch: 'full' },
+      {
+        path: 'pedidos',
+        loadComponent: () =>
+        import('./features/admin/orders/order-list/admin-order-list.component').then(
+          (m) => m.AdminOrderListComponent
+        ),
+      },
+      {
+        path: 'pedidos/:id',
+        loadComponent: () =>
+        import('./features/admin/orders/order-detail/admin-order-detail.component').then(
+          (m) => m.AdminOrderDetailComponent
+        ),
+      },
+      {
+        path: 'categorias',
+        loadComponent: () =>
+        import('./features/admin/catalog/categories/admin-categories.component').then(
+          (m) => m.AdminCategoriesComponent
+        ),
+      },
+      {
+        path: 'pecas',
+        loadComponent: () =>
+        import('./features/admin/catalog/pieces/admin-pieces-list.component').then(
+          (m) => m.AdminPiecesListComponent
+        ),
+      },
+      {
+        path: 'pecas/novo',
+        loadComponent: () =>
+        import('./features/admin/catalog/pieces/admin-piece-form.component').then((m) => m.AdminPieceFormComponent),
+      },
+      {
+        path: 'pecas/:id/editar',
+        loadComponent: () =>
+        import('./features/admin/catalog/pieces/admin-piece-form.component').then((m) => m.AdminPieceFormComponent),
+      },
+      {
+        path: 'conjuntos',
+        loadComponent: () =>
+        import('./features/admin/catalog/sets/admin-sets-list.component').then((m) => m.AdminSetsListComponent),
+      },
+      {
+        path: 'conjuntos/novo',
+        loadComponent: () =>
+        import('./features/admin/catalog/sets/admin-set-form.component').then((m) => m.AdminSetFormComponent),
+      },
+      {
+        path: 'conjuntos/:id/editar',
+        loadComponent: () =>
+        import('./features/admin/catalog/sets/admin-set-form.component').then((m) => m.AdminSetFormComponent),
+      },
+      {
+        path: 'usuarios',
+        loadComponent: () =>
+          import('./features/admin/users/admin-users.component').then((m) => m.AdminUsersComponent),
+      },
+    ],
   },
 ];

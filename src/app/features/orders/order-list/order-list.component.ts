@@ -39,12 +39,12 @@ export class OrderListComponent implements OnInit {
 
   statusClass(status: OrderStatus): string {
     if (status === 'CANCELADO' || status === 'EXPIRADO' || status === 'ESTORNADO' || status === 'ESTORNO_SOLICITADO') {
-      return 'text-vinho';
+      return 'text-clay';
     }
     if (status === 'PAGO' || status === 'ENVIADO' || status === 'ENTREGUE') {
-      return 'text-terracota';
+      return 'text-forest';
     }
-    return 'text-grafite/60';
+    return 'text-ink/60';
   }
 
   private loadOrders(): void {

@@ -7,7 +7,6 @@ import { CatalogService } from '../../../catalog/catalog.service';
 import { AdminCatalogService } from '../../admin-catalog.service';
 import { PieceResponse } from '../../../../core/models/catalog.model';
 import { ApiError } from '../../../../core/models/api-error.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
 import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 const PIECES_POOL_SIZE = 100;
@@ -15,7 +14,7 @@ const PIECES_POOL_SIZE = 100;
 @Component({
   selector: 'app-admin-set-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CurrencyPipe, AdminHeaderComponent, BackLinkComponent],
+  imports: [ReactiveFormsModule, CurrencyPipe, BackLinkComponent],
   templateUrl: './admin-set-form.component.html',
 })
 export class AdminSetFormComponent implements OnInit {

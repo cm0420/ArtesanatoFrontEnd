@@ -52,6 +52,7 @@ export class AddressesComponent implements OnInit {
   }
 
   deleteAddress(address: AddressResponse): void {
+    if (!confirm('Remover este endereço?')) return;
     this.deletingId.set(address.id);
     this.clienteService.deleteAddress(address.id).subscribe({
       next: () => {

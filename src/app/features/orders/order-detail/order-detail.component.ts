@@ -49,6 +49,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   cancelOrder(): void {
+    if (!confirm('Cancelar este pedido? As peças voltam para o estoque.')) return;
     const order = this.order();
     if (!order) return;
 

@@ -7,7 +7,6 @@ import { AdminOrdersService } from '../../admin-orders.service';
 import { AdminOrderDetailResponse } from '../../../../core/models/admin.model';
 import { ORDER_STATUS_LABEL } from '../../../../core/models/order.model';
 import { ApiError } from '../../../../core/models/api-error.model';
-import { AdminHeaderComponent } from '../../../../shared/ui/admin-header/admin-header.component';
 import { BackLinkComponent } from '../../../../shared/ui/back-link/back-link.component';
 
 type Tab = 'detalhes' | 'acoes';
@@ -15,7 +14,7 @@ type Tab = 'detalhes' | 'acoes';
 @Component({
   selector: 'app-admin-order-detail',
   standalone: true,
-  imports: [CurrencyPipe, AdminHeaderComponent, BackLinkComponent],
+  imports: [CurrencyPipe, BackLinkComponent],
   templateUrl: './admin-order-detail.component.html',
 })
 export class AdminOrderDetailComponent implements OnInit {
@@ -87,6 +86,7 @@ export class AdminOrderDetailComponent implements OnInit {
   }
 
   cancelOrder(): void {
+    if (!confirm('Cancelar este pedido? As peças voltam para o estoque.')) return;
     this.submitting.set(true);
     this.errorMessage.set(null);
     this.adminOrdersService.cancel(this.orderId).subscribe({

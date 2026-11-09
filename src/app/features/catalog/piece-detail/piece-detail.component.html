@@ -1,27 +1,26 @@
-<div class="min-h-screen bg-osso bg-leaves">
+<div class="min-h-screen">
   <app-site-header />
 
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+  <main id="conteudo" class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <app-back-link to="/" label="Voltar ao catálogo" />
 
     @if (loading()) {
-      <p class="font-mono text-sm text-grafite/60">Carregando…</p>
+      <p class="font-body text-sm text-ink/60">Carregando…</p>
     } @else if (notFound() || !piece()) {
-      <p class="font-mono text-sm text-vinho">Peça não encontrada.</p>
+      <p class="font-body text-sm text-clay">Peça não encontrada.</p>
     } @else {
       @let p = piece()!;
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div class="relative rounded-2xl overflow-hidden border border-areia h-80 md:h-[28rem]">
+        <div class="relative rounded-3xl overflow-hidden border border-hairline h-80 md:h-[28rem]">
           @if (p.imageUrls.length > 0) {
-            <img [src]="p.imageUrls[0]" [alt]="p.name" class="w-full h-full object-cover" />
+            <img [src]="p.imageUrls[0]" [alt]="p.name" width="800" height="800" fetchpriority="high" class="w-full h-full object-cover" />
           } @else {
-            <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, #C1592B, #a8461f)">
-              <span class="font-mono text-xs text-white/60">foto do produto</span>
-            </div>
+            <div class="w-full h-full flex items-center justify-center liquid-fill">
+              </div>
           }
           @if (!p.inStock) {
             <span
-              class="absolute top-4 right-4 font-mono text-sm font-semibold uppercase tracking-wide bg-grafite/90 text-osso px-3.5 py-2 rounded-lg"
+              class="absolute top-4 right-4 font-body text-sm font-semibold uppercase tracking-wide bg-ink/90 text-canvas px-3.5 py-2 rounded-xl"
             >
               Esgotado
             </span>
@@ -32,27 +31,27 @@
           @if (p.categories.length > 0) {
             <div class="flex flex-wrap gap-2">
               @for (category of p.categories; track category.id) {
-                <span class="font-mono text-sm font-semibold uppercase tracking-wide bg-dourado text-grafite px-3 py-1.5 rounded-lg">
+                <span class="font-body text-sm font-semibold uppercase tracking-wide bg-gold text-ink px-3 py-1.5 rounded-xl">
                   {{ category.name }}
                 </span>
               }
             </div>
           }
 
-          <h1 class="font-display uppercase tracking-wide text-5xl text-grafite">{{ p.name }}</h1>
+          <h1 class="font-display text-5xl text-ink">{{ p.name }}</h1>
 
-          <p class="font-mono font-semibold text-2xl text-grafite">{{ p.price | currency: 'BRL' }}</p>
+          <p class="font-body font-semibold text-2xl text-ink">{{ p.price | currency: 'BRL' }}</p>
 
           @if (p.description) {
-            <p class="font-body text-lg text-grafite/80 leading-relaxed max-w-md">{{ p.description }}</p>
+            <p class="font-body text-lg text-ink/80 leading-relaxed max-w-md">{{ p.description }}</p>
           }
 
-          <p [class]="'font-mono text-sm font-semibold uppercase tracking-wide ' + (p.inStock ? 'text-grafite/60' : 'text-vinho')">
+          <p [class]="'font-body text-sm font-semibold uppercase tracking-wide ' + (p.inStock ? 'text-ink/60' : 'text-clay')">
             {{ p.inStock ? p.stock + ' em estoque' : 'Sem estoque no momento' }}
           </p>
 
           @if (addToCartError()) {
-            <p class="font-mono text-xs text-vinho border border-vinho/30 bg-vinho/5 rounded-lg px-3 py-2">
+            <p role="alert" class="font-body text-xs text-danger border border-danger/25 bg-danger/5 rounded-xl px-3 py-2">
               {{ addToCartError() }}
             </p>
           }
@@ -60,21 +59,21 @@
           @if (p.inStock) {
             @if (isAuthenticated()) {
               <div class="flex flex-col sm:flex-row sm:items-center gap-4 mt-2">
-                <div class="flex items-center border border-areia rounded-lg overflow-hidden w-fit">
+                <div class="flex items-center border border-hairline rounded-xl overflow-hidden w-fit">
                   <button
                     type="button"
                     (click)="decrementQuantity()"
                     [disabled]="quantity() <= 1"
-                    class="w-11 h-11 flex items-center justify-center font-mono text-grafite hover:bg-osso transition-colors disabled:opacity-30"
+                    class="w-11 h-11 flex items-center justify-center font-body text-ink hover:bg-canvas transition-colors disabled:opacity-30"
                   >
                     −
                   </button>
-                  <span class="w-10 text-center font-mono text-base text-grafite">{{ quantity() }}</span>
+                  <span class="w-10 text-center font-body text-base text-ink">{{ quantity() }}</span>
                   <button
                     type="button"
                     (click)="incrementQuantity()"
                     [disabled]="quantity() >= p.stock"
-                    class="w-11 h-11 flex items-center justify-center font-mono text-grafite hover:bg-osso transition-colors disabled:opacity-30"
+                    class="w-11 h-11 flex items-center justify-center font-body text-ink hover:bg-canvas transition-colors disabled:opacity-30"
                   >
                     +
                   </button>
@@ -84,7 +83,7 @@
                   type="button"
                   (click)="addToCart(p.id)"
                   [disabled]="addingToCart()"
-                  class="btn font-display uppercase tracking-wide text-base px-7 py-3.5 rounded-lg border-2 border-grafite bg-terracota text-osso font-semibold transition-all duration-300 hover:shadow-lg active:scale-[0.97] active:duration-75 disabled:opacity-60"
+                  class="btn font-body font-semibold text-base px-7 py-3.5 rounded-full border border-ink bg-forest text-canvas  transition duration-300 active:scale-[0.97] active:duration-75 disabled:opacity-60"
                 >
                   {{ justAdded() ? 'Adicionado ✓' : addingToCart() ? 'Adicionando…' : 'Adicionar ao carrinho' }}
                 </button>
@@ -92,7 +91,7 @@
             } @else {
               <a
                 routerLink="/login"
-                class="inline-block w-fit font-mono text-xs uppercase tracking-wide text-vinho border border-vinho rounded-lg px-4 py-2.5 hover:bg-vinho hover:text-osso transition-colors mt-2"
+                class="inline-block w-fit font-body text-xs uppercase tracking-wide text-clay border border-clay rounded-full px-4 py-2.5 hover:bg-clay hover:text-canvas transition-colors mt-2"
               >
                 Entrar para comprar
               </a>
