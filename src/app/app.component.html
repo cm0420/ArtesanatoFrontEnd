@@ -1,4 +1,19 @@
 <a href="#conteudo" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:text-canvas focus:rounded-full focus:px-5 focus:py-3 font-body text-sm font-semibold">
   Pular para o conteúdo
 </a>
+
+@if (loading.active()) {
+  <div
+    class="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-canvas/85 backdrop-blur-sm"
+    role="status"
+    aria-live="polite"
+  >
+    <span
+      class="h-10 w-10 rounded-full border-[3px] border-hairline border-t-forest animate-spin"
+      aria-hidden="true"
+    ></span>
+    <span class="font-body text-sm font-medium text-stone">Carregando…</span>
+  </div>
+}
+
 <router-outlet />

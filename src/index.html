@@ -14,6 +14,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <app-root></app-root>
+  <app-root>
+    <!-- Splash até o Angular carregar (some sozinho quando o app renderiza).
+         Cobre a abertura do site, inclusive o cold start do backend. -->
+    <div style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#f7f1e8;font-family:'Hanken Grotesk',system-ui,sans-serif">
+      <span style="width:40px;height:40px;border:3px solid #e1dcd3;border-top-color:#224228;border-radius:9999px;animation:jequi-spin .7s linear infinite"></span>
+      <span style="font-size:14px;font-weight:500;color:#4a4741">Carregando…</span>
+    </div>
+    <style>@keyframes jequi-spin{to{transform:rotate(360deg)}}</style>
+  </app-root>
 </body>
 </html>

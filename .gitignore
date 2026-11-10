@@ -53,3 +53,4 @@ modulo-*.md
 
 # Vercel
 .vercel
+.env*
