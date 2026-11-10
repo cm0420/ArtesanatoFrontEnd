@@ -31,6 +31,7 @@ export class CatalogBrowseComponent implements OnInit {
   readonly page = signal(0);
   readonly totalPages = signal(0);
   readonly loading = signal(true);
+  readonly errorMessage = signal<string | null>(null);
 
   readonly searchQuery = signal('');
   readonly searchResults = signal<PieceResponse[] | null>(null);
@@ -86,10 +87,16 @@ export class CatalogBrowseComponent implements OnInit {
 
   private loadSets(): void {
     this.setsLoading.set(true);
-    this.catalogService.listSets(this.setsPage(), SETS_PAGE_SIZE).subscribe((result) => {
-      this.sets.set(result.content);
-      this.setsTotalPages.set(result.totalPages);
-      this.setsLoading.set(false);
+    this.catalogService.listSets(this.setsPage(), SETS_PAGE_SIZE).subscribe({
+      next: (result) => {
+        this.sets.set(result.content);
+        this.setsTotalPages.set(result.totalPages);
+        this.setsLoading.set(false);
+      },
+      error: () => {
+        this.setsLoading.set(false);
+        this.errorMessage.set('Não foi possível carregar os conjuntos agora. Atualize a página em instantes.');
+      },
     });
   }
 
@@ -139,10 +146,16 @@ export class CatalogBrowseComponent implements OnInit {
     this.loading.set(true);
     this.catalogService
       .listPieces(this.page(), CatalogBrowseComponent.PAGE_SIZE, this.selectedCategoryId() ?? undefined)
-      .subscribe((result) => {
-        this.pieces.set(result.content);
-        this.totalPages.set(result.totalPages);
-        this.loading.set(false);
+      .subscribe({
+        next: (result) => {
+          this.pieces.set(result.content);
+          this.totalPages.set(result.totalPages);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+          this.errorMessage.set('Não foi possível carregar as peças agora. Atualize a página em instantes.');
+        },
       });
   }
 

@@ -18,9 +18,16 @@ export class CartPageComponent implements OnInit {
   readonly cart = this.cartService.cart;
   readonly loading = signal(true);
   readonly updatingItemId = signal<string | null>(null);
+  readonly errorMessage = signal<string | null>(null);
 
   ngOnInit(): void {
-    this.cartService.loadCart().subscribe(() => this.loading.set(false));
+    this.cartService.loadCart().subscribe({
+      next: () => this.loading.set(false),
+      error: () => {
+        this.loading.set(false);
+        this.errorMessage.set('Não foi possível carregar seu carrinho agora. Tente novamente em instantes.');
+      },
+    });
   }
 
   incrementQuantity(item: OrderItemResponse): void {
@@ -36,13 +43,27 @@ export class CartPageComponent implements OnInit {
 
   removeItem(item: OrderItemResponse): void {
     this.updatingItemId.set(item.id);
-    this.cartService.removeItem(item.id).subscribe(() => this.updatingItemId.set(null));
+    this.errorMessage.set(null);
+    this.cartService.removeItem(item.id).subscribe({
+      next: () => this.updatingItemId.set(null),
+      error: () => {
+        this.updatingItemId.set(null);
+        this.errorMessage.set('Não foi possível remover o item. Tente novamente.');
+      },
+    });
   }
 
   private updateQuantity(item: OrderItemResponse, quantity: number): void {
     this.updatingItemId.set(item.id);
+    this.errorMessage.set(null);
     this.cartService
       .updateItemQuantity(item.id, { quantity })
-      .subscribe(() => this.updatingItemId.set(null));
+      .subscribe({
+        next: () => this.updatingItemId.set(null),
+        error: () => {
+          this.updatingItemId.set(null);
+          this.errorMessage.set('Não foi possível atualizar a quantidade. Tente novamente.');
+        },
+      });
   }
 }

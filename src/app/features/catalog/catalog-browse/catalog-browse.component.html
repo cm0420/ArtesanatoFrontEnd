@@ -2,6 +2,11 @@
   <app-site-header />
 
   <main id="conteudo" class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+    @if (errorMessage()) {
+      <p role="alert" class="font-body text-sm text-danger border border-danger/25 bg-danger/5 rounded-xl px-4 py-3 mt-6">
+        {{ errorMessage() }}
+      </p>
+    }
     <header class="pt-10 sm:pt-14 pb-8">
       <p class="font-body text-xs font-semibold uppercase tracking-[0.16em] text-clay mb-3">Jequí</p>
       <h1 class="font-display text-ink text-4xl sm:text-6xl">Todo o catálogo</h1>

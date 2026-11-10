@@ -2,6 +2,11 @@
   <app-site-header />
 
   <main id="conteudo" class="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+    @if (errorMessage()) {
+      <p role="alert" class="font-body text-sm text-danger border border-danger/25 bg-danger/5 rounded-xl px-4 py-3 mt-6">
+        {{ errorMessage() }}
+      </p>
+    }
     <section class="relative pt-14 sm:pt-24 pb-12 sm:pb-16 grid lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-10" aria-labelledby="vitrine-titulo">
       <div class="hero-liquid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div class="relative z-10">

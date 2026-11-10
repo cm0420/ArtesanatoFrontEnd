@@ -4,6 +4,12 @@
 
     <h1 class="font-display text-4xl text-ink mb-8">Pedidos</h1>
 
+    @if (errorMessage()) {
+      <p role="alert" class="font-body text-sm text-danger border border-danger/25 bg-danger/5 rounded-xl px-4 py-3 mb-8">
+        {{ errorMessage() }}
+      </p>
+    }
+
     <div class="bg-surface border border-hairline rounded-3xl p-4 sm:p-5 mb-8 shadow-soft">
       <p class="font-body text-xs font-semibold uppercase tracking-[0.14em] text-ink/50 mb-3">Filtrar por status</p>
       <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar pedidos por status">

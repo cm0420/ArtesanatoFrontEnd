@@ -24,6 +24,7 @@ export class OrderListComponent implements OnInit {
   readonly page = signal(0);
   readonly totalPages = signal(0);
   readonly loading = signal(true);
+  readonly errorMessage = signal<string | null>(null);
 
   readonly hasPrev = computed(() => this.page() > 0);
   readonly hasNext = computed(() => this.page() + 1 < this.totalPages());
@@ -49,10 +50,16 @@ export class OrderListComponent implements OnInit {
 
   private loadOrders(): void {
     this.loading.set(true);
-    this.ordersService.listOwnOrders(this.page(), PAGE_SIZE).subscribe((result) => {
-      this.orders.set(result.content);
-      this.totalPages.set(result.totalPages);
-      this.loading.set(false);
+    this.ordersService.listOwnOrders(this.page(), PAGE_SIZE).subscribe({
+      next: (result) => {
+        this.orders.set(result.content);
+        this.totalPages.set(result.totalPages);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+        this.errorMessage.set('Não foi possível carregar seus pedidos agora. Tente novamente em instantes.');
+      },
     });
   }
 }

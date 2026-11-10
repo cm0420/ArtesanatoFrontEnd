@@ -173,11 +173,14 @@ export class AdminShellComponent implements OnInit {
     // Fecha a gaveta ao trocar de tela no celular.
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed(this.destroyRef)).subscribe(() => this.menuOpen.set(false));
 
-    this.adminService.getOrdersByStatus().subscribe((rows) =>
-      this.attention.set(
-        rows.filter((r) => r.status === 'PAGO' || r.status === 'ESTORNO_SOLICITADO').reduce((s, r) => s + r.count, 0)
-      )
-    );
+    this.adminService.getOrdersByStatus().subscribe({
+      next: (rows) =>
+        this.attention.set(
+          rows.filter((r) => r.status === 'PAGO' || r.status === 'ESTORNO_SOLICITADO').reduce((s, r) => s + r.count, 0)
+        ),
+      // Badge do menu: se falhar, fica em zero em vez de quebrar o shell inteiro.
+      error: () => this.attention.set(0),
+    });
   }
 
   logout(): void {

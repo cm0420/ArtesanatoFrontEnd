@@ -35,6 +35,7 @@ export class AdminOrderListComponent implements OnInit {
   readonly page = signal(0);
   readonly totalPages = signal(0);
   readonly loading = signal(true);
+  readonly errorMessage = signal<string | null>(null);
 
   readonly hasPrev = computed(() => this.page() > 0);
   readonly hasNext = computed(() => this.page() + 1 < this.totalPages());
@@ -76,10 +77,16 @@ export class AdminOrderListComponent implements OnInit {
     this.loading.set(true);
     this.adminOrdersService
       .listAllOrders(this.page(), PAGE_SIZE, this.selectedStatus() ?? undefined)
-      .subscribe((result) => {
-        this.orders.set(result.content);
-        this.totalPages.set(result.totalPages);
-        this.loading.set(false);
+      .subscribe({
+        next: (result) => {
+          this.orders.set(result.content);
+          this.totalPages.set(result.totalPages);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+          this.errorMessage.set('Não foi possível carregar os pedidos agora. Tente novamente em instantes.');
+        },
       });
   }
 }

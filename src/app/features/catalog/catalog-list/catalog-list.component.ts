@@ -18,6 +18,7 @@ export class CatalogListComponent implements OnInit {
 
   readonly pieces = signal<PieceResponse[]>([]);
   readonly loading = signal(true);
+  readonly errorMessage = signal<string | null>(null);
 
   // Seções da home, derivadas das peças já carregadas (sem flag de "recomendado" no backend).
   readonly heroPieces = computed(() => this.pieces().filter((p) => p.imageUrls.length > 0).slice(0, 3));
@@ -27,9 +28,15 @@ export class CatalogListComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    this.catalogService.listPieces(0, CatalogListComponent.PAGE_SIZE).subscribe((result) => {
-      this.pieces.set(result.content);
-      this.loading.set(false);
+    this.catalogService.listPieces(0, CatalogListComponent.PAGE_SIZE).subscribe({
+      next: (result) => {
+        this.pieces.set(result.content);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+        this.errorMessage.set('Não foi possível carregar o catálogo agora. Atualize a página em instantes.');
+      },
     });
   }
 }
